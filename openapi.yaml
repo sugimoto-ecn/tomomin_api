@@ -246,4 +246,5 @@ paths:
                   sleeped_at: {type: string, example: "YYYY/mm/dd H:i:s"}
                   wakeuped_at: {type: string, example: "YYYY/mm/dd H:i:s"}
                   sleep_time: {type: string, example: "8時間20分"}
-           
+  
+  
