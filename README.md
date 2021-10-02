@@ -22,8 +22,9 @@ nodemon app.js
 ```
 
 5. 動作確認
+例)
 ```
-http://localhost:3030
+http://localhost:3030/users/1/get
 ```
 
 5. 停止
