@@ -41,12 +41,18 @@ ctrl+c
 $ cd infra
 ```
 
-2. mysql起動
+2. docker 起動
+
+```
+$ docker-compose up -d --build
+```
+
+3. mysql起動
 ```
 $ docker-compose exec db bash -c 'mysql -u${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE}'
 ```
 
-3. sequel pro 接続情報
+4. sequel pro 接続情報
 ```
 host: 127.0.0.1
 Username: project
@@ -54,13 +60,26 @@ Password: Passw0rd!
 Port: 5306
 ```
 
-4. テーブル準備
+5. テーブル準備
 - sqlフォルダ内ファイルを順に実行
 
 
 
 ### その他
-1. MySQLのデータを初期化
+
+#### swagger viewer
+
+https://zenn.dev/nekoniki/articles/acd946cc349d1e
+
+swagger viewerをインストールできたら
+
+openapi.yamlを開き
+```
+sift + option + P
+```
+左窓にAPIの仕様書が表示されます。
+
+#### MySQLのデータを初期化
 ```
 $ docker-compose down --volumes
 $ docker-compose up -d
