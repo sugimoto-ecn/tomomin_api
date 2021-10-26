@@ -20,7 +20,7 @@ connection.connect(function(err) {
 
 app.use('/v1/', router)
 
-app.listen(3030, () => {
+app.listen(3000, () => {
     console.log('start')
     console.log(process.env.DB_HOSTNAME)
 });
