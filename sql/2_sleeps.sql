@@ -1,3 +1,4 @@
+USE tomomin_dev;
 DROP TABLE IF EXISTS `sleeps`;
 CREATE TABLE `sleeps` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
