@@ -13,6 +13,7 @@ const {
     getProductUser,
     sleepProduct,
     getSleepProduct,
+    getSleepData,//sleepsのget
 } = require('./controllers/UserController')
 
 router.route("/users/register").post(registerUser)
@@ -26,5 +27,6 @@ router.route("/users/product").post(productUser)
 router.route("/user/product/get").get(getProductUser)
 router.route("/sleeps/:product/sleep").get(sleepProduct)
 router.route("/sleeps/:product/sleep/get").get(getSleepProduct)
+router.route("/sleeps/:userId/data").get(getSleepData)//sleepsのget
 
 module.exports = router;
