@@ -14,6 +14,7 @@ jobs:
 workflows:
   sample: 
     jobs:
+      - build
       - node/test:
           version: '16.10'
           pkg-manager: npm
