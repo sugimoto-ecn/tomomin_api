@@ -21,6 +21,11 @@ connection.connect(function(err) {
     console.log('Connected');
   });
 
+app.get('/' , (req , res) => {
+  res.render({
+    message:"this is tomomin api app"
+  })
+})
 app.use('/v1/', router)
 
 app.listen(3000, () => {
