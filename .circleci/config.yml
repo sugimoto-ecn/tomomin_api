@@ -25,4 +25,11 @@ workflows:
   sample: 
     jobs:
       - build
+      - deploy:
+          reuires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
     
