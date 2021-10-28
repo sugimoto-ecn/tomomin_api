@@ -68,7 +68,7 @@ const updateUser = (req, res) => {
     console.log(req.params)
 
     connection.query(
-        'UPDATE users SET id = ?, name = ?, message = ? , product = ? WHERE id = ?',
+        'UPDATE users SET name = ?, message = ?',
         [req.body.name, req.body.message, r, id],
         (error,results)=>{
           connection.query(
