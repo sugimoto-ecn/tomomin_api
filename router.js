@@ -11,8 +11,14 @@ const {
     getLoginUser,
     productUser,
     getProductUser,
+} = require('./controllers/UserController')
+
+const {
     sleepProduct,
     getSleepProduct,
+    wakeUp,
+    getWakeUp,
+    getSleepData
 } = require('./controllers/UserController')
 
 router.route("/users/register").post(registerUser)
@@ -24,7 +30,10 @@ router.route("/users/login").post(loginUser)
 router.route("/users/login/get").get(getLoginUser)
 router.route("/users/product").post(productUser)
 router.route("/user/product/get").get(getProductUser)
-router.route("/sleeps/:product/sleep").get(sleepProduct)
-router.route("/sleeps/:product/sleep/get").get(getSleepProduct)
+
+router.route("/sleeps/:productId/sleep").post(sleepProduct)
+router.route("/sleeps/:productId/wakeup").post(wakeUp)
+router.route("/sleeps/productId/wakeup/get").get(getWakeUp)
+router.route("/sleeps/:userId/data").get(getSleepData)//sleepsのget
 
 module.exports = router;
