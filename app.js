@@ -3,12 +3,9 @@ const cors = require('cors')
 const connection = require('./models/db-connection')
 
 console.log("############")
-console.log(process.env.DB_HOSTNAME)
 console.log('############')
-console.log(process.env)
-require('dotenv').config();
-// const bodyParser = require('body-parser')
 
+require('dotenv').config();
 
 const router = require('./router')
 const app = express()
