@@ -22,7 +22,7 @@ connection.connect(function(err) {
   });
 
 app.get('/' , (req , res) => {
-  res.render({
+  res.json({
     message:"this is tomomin api app"
   })
 })
