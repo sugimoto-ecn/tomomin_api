@@ -2,9 +2,6 @@ const express = require('express')
 const cors = require('cors')
 const connection = require('./models/db-connection')
 
-console.log("############")
-console.log('############')
-
 require('dotenv').config();
 
 const router = require('./router')
@@ -20,7 +17,7 @@ connection.connect(function(err) {
 
 app.get('/' , (req , res) => {
   res.json({
-    message:"this is tomomin api app"
+    message:"this is tomomin api app 1"
   })
 })
 app.use('/v1/', router)
