@@ -66,6 +66,17 @@ const updateUser = (req, res) => {
     console.log(req.body.name)
     console.log(req.body.message)
     console.log(req.params)
+
+    connection.query(
+        'UPDATE users SET id = ?, name = ?, message = ? , product = ? WHERE id = ?',
+        [req.body.name, req.body.message, r, id],
+        (error,results)=>{
+          connection.query(
+            'SELECT id, name, message, email, FROM users ORDER BY date',
+          );
+        }
+      )
+
     res.json({
         name:req.body.name,
         message:req.body.message,
@@ -78,6 +89,7 @@ const getUpdateUser = (req, res) => {
         message:"ユーザー更新API"
     })
 }
+
 
 
 const getUser =(req, res) =>{
@@ -95,6 +107,12 @@ const getUser =(req, res) =>{
 const loginUser = (req, res) => {
     console.log(req.body.email)
     console.log(req.body.password)
+
+    connection.query(
+        'SELECT email, password, FROM users  WHERE email = ? AND password = ? ORDER BY ASC',
+        [req.body.email, hash],
+    )
+
     res.json({
         email:req.body.email,
         password:req.body.password,
@@ -112,6 +130,12 @@ const getLoginUser = (req, res) =>{
 //プロダクト登録
 const productUser = (req, res) =>{
     console.log(req.body.value)
+
+    connection.query(
+        'SELECT value FROM users ORDER BY ASC',
+        [r],
+    )
+
     res.json({
         value:req.body.value,
     })
@@ -120,23 +144,10 @@ const productUser = (req, res) =>{
 const getProductUser =(req, res) =>{
     console.log(req.params)
     res.json({
-        message:"プロダクト登録API"
+        message:"success"
     })
 }
 
-const sleepProduct =(req, res) =>{
-    console.log(req.body.datetime)
-    res.json({
-        datetime:req.body.value,
-    })
-}
-
-const getSleepProduct =(req,res) =>{
-    console.log(req.params)
-    res.json({
-        message:"OK"
-    })
-}
 
 module.exports = {
     registerUser,
@@ -148,6 +159,4 @@ module.exports = {
     getLoginUser,
     productUser,
     getProductUser,
-    sleepProduct,
-    getSleepProduct,
 }
