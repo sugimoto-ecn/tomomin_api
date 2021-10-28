@@ -10,11 +10,19 @@ jobs:
       - image: circleci/node:14.15.4-buster
     steps:
       - run: echo "yaa"
+  deploy:
+    docker:
+      - image: circleci/php:7.3-node-browsers
+    steps:
+      - add_ssh_keys
+      - run:
+         name: deploy
+         command: |
+           ssh -o StrictHostKeyChecking=no -t ec2-user@${HOST_NAME} 
+    
 
 workflows:
   sample: 
     jobs:
       - build
-      - node/test:
-          version: '16.10'
-          pkg-manager: npm
+    
