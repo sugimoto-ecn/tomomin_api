@@ -18,7 +18,7 @@ jobs:
       - run:
          name: deploy
          command: |
-           ssh -o StrictHostKeyChecking=no -t ec2-user@${HOST_NAME}  "cd tomomin_api/ && \
+           ssh -o StrictHostKeyChecking=no -t ec2-user@${HOST_NAME}  "cd ~/tomomin_api && ls && \
            git add . &&  git commit -m 'local files server commit' && git pull && \
            npm install && \
            pm2 restart app"
