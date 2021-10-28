@@ -17,7 +17,7 @@ connection.connect(function(err) {
 
 app.get('/' , (req , res) => {
   res.json({
-    message:"this is tomomin api app 1"
+    message:"this is tomomin api app 2"
   })
 })
 app.use('/v1/', router)
