@@ -19,6 +19,7 @@ jobs:
          name: deploy
          command: |
            ssh -o StrictHostKeyChecking=no -t ec2-user@${HOST_NAME}  "cd tomomin_api/ && \
+           git reset --merge && \
            git pull && \
            npm install && \
            pm2 restart app"
