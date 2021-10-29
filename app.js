@@ -2,10 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const connection = require('./models/db-connection')
 
-
 require('dotenv').config();
-// const bodyParser = require('body-parser')
-
 
 const router = require('./router')
 const app = express()
@@ -18,9 +15,14 @@ connection.connect(function(err) {
     console.log('Connected');
   });
 
+app.get('/' , (req , res) => {
+  res.json({
+    message:"this is tomomin api app ；；pp"
+  })
+})
 app.use('/v1/', router)
 
-app.listen(3030, () => {
+app.listen(3000, () => {
     console.log('start')
     console.log(process.env.DB_HOSTNAME)
 });

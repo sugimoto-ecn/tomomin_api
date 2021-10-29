@@ -46,18 +46,23 @@ connection.query(
         // console.log(r)
     }
 );
-
-
-    //ランダムな8桁整数生成・パスワードのハッシュ化
-    //DBトやりとりシテデ0タホゾン
-    
 }
 
+
+//ユーザ情報取得
 const getOneUser = (req, res) => {
-    console.log(req.params)
-    res.json({
-        message:"ユーザー取得API"
-    })
+    const id = req.params.userId
+    console.log(id)
+    connection.query(
+        "SELECT id, name, email, product from users WHERE id=?",
+        [id],   
+        (error, results) => {
+            console.log(results)
+            res.json({
+                results
+            })
+        }
+    );
 }
 
 
@@ -68,7 +73,7 @@ const updateUser = (req, res) => {
     console.log(req.params)
 
     connection.query(
-        'UPDATE users SET id = ?, name = ?, message = ? , product = ? WHERE id = ?',
+        'UPDATE users SET name = ?, message = ?',
         [req.body.name, req.body.message, r, id],
         (error,results)=>{
           connection.query(
@@ -149,6 +154,28 @@ const getProductUser =(req, res) =>{
 }
 
 
+//sleepsのget　睡眠情報取得
+const getSleepData = (req, res) => {
+    const userId = req.params.userId
+    const start = req.query.start
+    const end = req.query.end
+    console.log(userId)
+    console.log(start)
+    console.log(end)
+    connection.query(
+       /* "SELECT id, name, email, product from sleeps WHERE userId=?",
+        [userId],*/
+        "SELECT sleeped_at, wakeuped_at, sleep_time from sleeps WHERE userId=? AND datetime　BETWEEN ?　AND ?",
+        [userId, start, end],   
+        (error, results) => {
+            console.log(results)
+            res.json({
+                results
+            })
+        }
+    );
+}
+
 module.exports = {
     registerUser,
     getOneUser,
@@ -159,4 +186,5 @@ module.exports = {
     getLoginUser,
     productUser,
     getProductUser,
+    getSleepData,//sleepsのget
 }

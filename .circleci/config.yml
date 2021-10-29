@@ -1,0 +1,38 @@
+# This config is equivalent to both the '.circleci/extended/orb-free.yml' and the base '.circleci/config.yml'
+version: 2.1
+
+orbs:
+  node: circleci/node@4.7
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:14.15.4-buster
+    steps:
+      - run: echo "yaa"
+  deploy:
+    docker:
+      - image: circleci/node:14.15.4-buster
+    steps:
+      - add_ssh_keys
+      - run:
+         name: deploy
+         command: |
+           ssh -o StrictHostKeyChecking=no -t ec2-user@${HOST_NAME}  "cd ~/tomomin_api && ls && \
+           git pull && \
+           npm install && \
+           pm2 restart app"
+    
+
+workflows:
+  sample: 
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+    
