@@ -25,5 +25,13 @@ app.use('/v1/', router)
 app.listen(3000, () => {
     console.log('start')
     console.log(process.env.DB_HOSTNAME)
+    console.log({
+      host: process.env.DB_HOSTNAME,
+      port: process.env.DB_PORT,
+      database: process.env.DB_DB_NAME,
+      user: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      // timezone: 'jst',
+  })
 });
 
