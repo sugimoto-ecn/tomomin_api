@@ -1,6 +1,9 @@
 const express = require('express')
 const cors = require('cors')
 const connection = require('./models/db-connection')
+const logger = require("./lib/log/logger")
+const applicationlogger = require("./lib/log/applicationlogger")
+const accesslogger = require("./lib/log/accesslogger")
 
 require('dotenv').config();
 
@@ -15,13 +18,12 @@ connection.connect(function(err) {
     console.log('Connected');
   });
 
-app.get('/' , (req , res) => {
-  res.json({
-    message:"this is tomomin api app ；；pp"
-  })
-})
+  
+app.disable("x-powerd-by");
+app.use(accesslogger());
 app.use('/v1/', router)
 
+app.use(applicationlogger())
 app.listen(3000, () => {
     console.log('start')
     console.log(process.env.DB_HOSTNAME)

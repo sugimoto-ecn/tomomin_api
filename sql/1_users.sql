@@ -5,8 +5,10 @@ CREATE TABLE `users` (
   `name` varchar(255) DEFAULT NULL COMMENT 'ユーザー名',
   `email` varchar(255) UNIQUE NOT NULL COMMENT 'メールアドレス',
   `password` varchar(255) NOT NULL COMMENT 'パスワード',
+  `product_valified` tinyint(1) DEFAULT 0,
   `product` varchar(8) DEFAULT NULL COMMENT 'パスワード',
   `created` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日時',
   `message` varchar(255) DEFAULT NULL COMMENT 'メッセージ文',
+  
   PRIMARY KEY (`id`)
 ) 

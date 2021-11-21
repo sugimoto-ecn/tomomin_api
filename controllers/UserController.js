@@ -1,18 +1,19 @@
 const connection = require("../models/db-connection");
 const {
     toHash,
-    createProductId
+    createProductId,
+    jwtDecode
 } = require("../util/user");
 const jwt = require("jsonwebtoken");
 const config = require("../config/jwt.config");
+const UserModel = require('../models/user')
 
 
 //ユーザ登録
-const registerUser = (req, res) => {
+const registerUser = async (req, res) => {
   const body = req.body
   if(!body?.email || !body?.password) {
       res.json({
-
           message:"正しく入力してください"
       })
   }
@@ -20,16 +21,9 @@ const registerUser = (req, res) => {
   const hash = toHash(password)
   const product = createProductId()
 
-  connection.query(
-    "INSERT INTO users (email, password, product) VALUES(?, ?, ?)",
-    [email, hash, product],
-    (error, results) => {
-      res.json({
-        email: email,
-        product: product,
-      });
-    }
-  );
+  const user = await UserModel.create(email, hash, product)
+
+  res.json(user)
 };
 
 //ユーザ情報取得
@@ -40,7 +34,6 @@ const getOneUser = (req, res) => {
     "SELECT id, name, email, product from users WHERE id=?",
     [id],
     (error, results) => {
-      console.log(results);
       res.json({
         results,
       });
@@ -49,20 +42,17 @@ const getOneUser = (req, res) => {
 };
 
 //ユーザ情報更新
-const updateUser = (req, res) => {
-  console.log(req.body.name);
-  console.log(req.body.message);
-  console.log(req.params);
+const updateUser = async (req, res) => {
+  const body = req.body
+  if(!body?.name || !body.message){
+    res.json({
+      message: "正しく入力してください"
+    })
+  }
+  const {name, message} = body
+  await UserModel.update(name, message)
 
-  connection.query(
-    "UPDATE users SET name = ?, message = ?",
-    [req.body.name, req.body.message, r, id],
-    (error, results) => {
-      connection.query(
-        "SELECT id, name, message, email, FROM users ORDER BY date"
-      );
-    }
-  );
+  
 
   res.json({
     name: req.body.name,
@@ -70,40 +60,50 @@ const updateUser = (req, res) => {
   });
 };
 
-const getUpdateUser = (req, res) => {
-  console.log(req.params);
-  res.json({
-    message: "ユーザー更新API",
-  });
-};
 
-const getUser = (req, res) => {
+const getUser = async (req, res) => {
   console.log(req.params);
+  const user = await UserModel.getOneUser(req.params.userId)
+  if(!user?.id){
+    res.json({
+      message:"not found"
+    })
+  }
   res.json({
-    name: string,
-    email: string,
-    message: string,
-    product: string,
+    user
   });
 };
 
 //ログイン
 const loginUser = async (req, res) => {
-  const test = await connection.query(
-    "SELECT * FROM users  WHERE email = ? AND password = ? ORDER BY ASC",
-    [req.body.email, hash]
-  );
-    res.json(test)
-//   res.json({
-//     email: req.body.email,
-//     password: req.body.password,
-//   });
+  const body = req.body
+  if(!body?.email || !body?.password) {
+      res.json({
+          message:"正しく入力してください"
+      })
+  }
+  const {email , password} = body
+  const hash = toHash(password)
+  
+  const result = await UserModel.login(email, hash)
+  console.log(result)
+
+  res.json({
+    result
+  });
 };
 
-const getLoginUser = (req, res) => {
-  console.log(req.params);
+const getLoginUser = async (req, res) => {
+
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1];
+
+  const {email} = jwtDecode(token)
+
+  const user = await UserModel.getLoginUser(email)
+
   res.json({
-    message: "ユーザーログインAPI",
+    user,
   });
 };
 
@@ -130,16 +130,10 @@ const getSleepData = (req, res) => {
   const userId = req.params.userId;
   const start = req.query.start;
   const end = req.query.end;
-  console.log(userId);
-  console.log(start);
-  console.log(end);
   connection.query(
-    /* "SELECT id, name, email, product from sleeps WHERE userId=?",
-        [userId],*/
     "SELECT sleeped_at, wakeuped_at, sleep_time from sleeps WHERE userId=? AND datetime　BETWEEN ?　AND ?",
     [userId, start, end],
     (error, results) => {
-      console.log(results);
       res.json({
         results,
       });
@@ -151,7 +145,7 @@ module.exports = {
   registerUser,
   getOneUser,
   updateUser,
-  getUpdateUser,
+
   getUser,
   loginUser,
   getLoginUser,
