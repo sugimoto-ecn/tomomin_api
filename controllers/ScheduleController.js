@@ -20,13 +20,14 @@ const createSchedule = async (req, res) => {
   res.json(user)
 };
 
-//ユーザ登録
+
 const getOneSchedule = async (req, res) => {
     const userId = req.params.userId;
     const user = await ScheduleModel.getOne(userId)
   
     res.json(user)
   };
+
 
 
 module.exports = {

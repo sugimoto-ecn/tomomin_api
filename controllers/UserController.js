@@ -7,6 +7,7 @@ const {
 const jwt = require("jsonwebtoken");
 const config = require("../config/jwt.config");
 const UserModel = require('../models/user')
+const ScheduleModel = require('../models/schedule')
 
 
 //ユーザ登録
@@ -93,35 +94,14 @@ const getLoginUser = async (req, res) => {
 //プロダクト登録
 const productUser = async (req, res) => {
   console.log(req.body.id);
-  const result = await UserModel.productVerify(req.body.id)
-  console.log(result)
+  const user = await UserModel.productVerify(req.body.id)
+
+  const schedule = await ScheduleModel.getOne(user.id)
 
   res.json({
-    result
+    user,
+    schedule
   });
-};
-
-const getProductUser = (req, res) => {
-  console.log(req.params);
-  res.json({
-    message: "success",
-  });
-};
-
-//sleepsのget　睡眠情報取得
-const getSleepData = (req, res) => {
-  const userId = req.params.userId;
-  const start = req.query.start;
-  const end = req.query.end;
-  connection.query(
-    "SELECT sleeped_at, wakeuped_at, sleep_time from sleeps WHERE userId=? AND datetime　BETWEEN ?　AND ?",
-    [userId, start, end],
-    (error, results) => {
-      res.json({
-        results,
-      });
-    }
-  );
 };
 
 module.exports = {
@@ -131,6 +111,4 @@ module.exports = {
   loginUser,
   getLoginUser,
   productUser,
-  getProductUser,
-  getSleepData, //sleepsのget
 };

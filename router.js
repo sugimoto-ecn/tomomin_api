@@ -8,7 +8,6 @@ const {
     loginUser,
     getLoginUser,
     productUser,
-    getProductUser,
 } = require('./controllers/UserController')
 
 const {
@@ -25,7 +24,7 @@ const {
 
 const {
     createSchedule,
-    getOneSchedule
+    getOneSchedule,
 } = require('./controllers/ScheduleController')
 
 router.route("/users/register").post(registerUser)
@@ -35,15 +34,8 @@ router.route("/users/:userId/update").put(verifyToken, updateUser)
 router.route("/users/:userId/get").get(verifyToken, getUser)
 
 router.route("/users/product").post(productUser)
-router.route("/user/product/get").get(getProductUser)
-
 
 router.route("/schedule/:userId/create").post(verifyToken, createSchedule)
 router.route("/schedule/:userId/getone").get(verifyToken, getOneSchedule)
-// router.route("/users/:userId/get").get(verifyToken, getUpdateUser)
-// router.route("/sleeps/:productId/sleep").post(sleepProduct)
-// router.route("/sleeps/:productId/wakeup").post(wakeUp)
-// router.route("/sleeps/productId/wakeup/get").get(getWakeUp)
-// router.route("/sleeps/:userId/data").get(getOneSchedule)//sleepsのget
 
 module.exports = router;

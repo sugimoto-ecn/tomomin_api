@@ -26,7 +26,8 @@ const ScheduleModel = {
             })
             
         })
-    }
+    },
+
 }
 
 module.exports = ScheduleModel

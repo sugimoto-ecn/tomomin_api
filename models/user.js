@@ -69,7 +69,7 @@ const UserModel = {
     },
     productVerify(id){
         return new Promise(function(resolve, reject){
-            let sql = `SELECT * FROM users WHERE product = ?`
+            let sql = `SELECT id, name, email, message FROM users WHERE product = ?`
             let result;
             connection.query(sql, [id], function(err, rows, fields){
                 if (err) return reject(err);
