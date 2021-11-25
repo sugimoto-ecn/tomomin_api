@@ -47,7 +47,7 @@ const UserModel = {
     },
     getOneUser(id){
         return new Promise(function(resolve, reject){
-            let sql = `SELECT id, name, email, message FROM users  WHERE id = ?`
+            let sql = `SELECT id, name, email, message, product FROM users  WHERE id = ?`
             connection.query(sql, [id], function(err, rows, fields){
                 if (err) return reject(err);
                 let result = rows.length > 0 ? rows[0] : {};
