@@ -26,21 +26,6 @@ const registerUser = async (req, res) => {
   res.json(user)
 };
 
-//ユーザ情報取得
-const getOneUser = (req, res) => {
-  const id = req.params.userId;
-  console.log(id);
-  connection.query(
-    "SELECT id, name, email, product from users WHERE id=?",
-    [id],
-    (error, results) => {
-      res.json({
-        results,
-      });
-    }
-  );
-};
-
 //ユーザ情報更新
 const updateUser = async (req, res) => {
   const body = req.body
@@ -51,8 +36,6 @@ const updateUser = async (req, res) => {
   }
   const {name, message} = body
   await UserModel.update(name, message)
-
-  
 
   res.json({
     name: req.body.name,
@@ -108,13 +91,13 @@ const getLoginUser = async (req, res) => {
 };
 
 //プロダクト登録
-const productUser = (req, res) => {
-  console.log(req.body.value);
-
-  connection.query("SELECT value FROM users ORDER BY ASC", [r]);
+const productUser = async (req, res) => {
+  console.log(req.body.id);
+  const result = await UserModel.productVerify(req.body.id)
+  console.log(result)
 
   res.json({
-    value: req.body.value,
+    result
   });
 };
 
@@ -143,9 +126,7 @@ const getSleepData = (req, res) => {
 
 module.exports = {
   registerUser,
-  getOneUser,
   updateUser,
-
   getUser,
   loginUser,
   getLoginUser,

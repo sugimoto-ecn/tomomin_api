@@ -66,6 +66,24 @@ const UserModel = {
             })
             
         })
+    },
+    productVerify(id){
+        return new Promise(function(resolve, reject){
+            let sql = `SELECT * FROM users WHERE product = ?`
+            let result;
+            connection.query(sql, [id], function(err, rows, fields){
+                if (err) return reject(err);
+                result = rows.length > 0 ? rows[0] : {};
+                console.log(result)
+            })
+            if (result == {}) return reject("no");
+            sql =  "UPDATE users SET product_verified = 1"
+            connection.query(sql, function(err, rows, fields){
+                if (err) return reject(err);
+               
+                return resolve(result);
+            })
+        })
     }
 }
 
