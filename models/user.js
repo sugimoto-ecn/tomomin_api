@@ -8,15 +8,49 @@ const config = require('../config/jwt.config')
 
 
 const UserModel = {
-    login(email, password){
+    getOneUser(id){
         return new Promise(function(resolve, reject){
-            let sql = `SELECT * FROM users  WHERE email = ? AND password = ?`
-            connection.query(sql, [email, password], function(err, rows, fields){
+            let sql = `SELECT id, name, product, product_verified, message, email FROM users  WHERE id = ?`
+            connection.query(sql, [id], function(err, rows, fields){
                 if (err) return reject(err);
                 let result = rows.length > 0 ? rows[0] : {};
                 const payload = {
+                    id: result.id,
+                    name: result.name,
+                    product: result.product,
+                    verify: result.product_verified,
+                    message: result.massage,
+                    email:result.email
+                  };
+                  console.log('??????payload?????')
+                  console.log(payload)
+                  console.log("???????????")
+                const token = jwt.sign(payload, config.jwt.secret, config.jwt.options);
+                result.accessToken = token
+                console.log(token)
+                return resolve(result);
+            })
+            
+        })
+    },
+    login(email, password){
+        return new Promise(function(resolve, reject){
+            let sql = `SELECT id, name, product, product_verified, message, email FROM users  WHERE email = ? AND password = ?`
+            connection.query(sql, [email, password], function(err, rows, fields){
+                if (err) return reject(err);
+                let result = rows.length > 0 ? rows[0] : {};
+                if(!rows.length) return resolve({})
+                const payload = {
+                    id: result.id,
+                    name: result.name,
+                    product: result.product,
+                    verify: result.product_verified,
+                    message: result.massage,
                     email
                   };
+                  console.log(':::::::::')
+                  console.log(payload)
+                  console.log(":::::::")
                 const token = jwt.sign(payload, config.jwt.secret, config.jwt.options);
                 result.accessToken = token
                 return resolve(result);
@@ -34,28 +68,18 @@ const UserModel = {
             })
         })
     },
-    update(name, message){
+    update(name, message, id){
         return new Promise(function(resolve, reject){
-            let sql = "UPDATE users SET name = ?, message = ?"
+            let sql = "UPDATE users SET name = ?, message = ? WHERE id = ?"
             
-            connection.query(sql, [name, message], function(err, rows, fields){
+            connection.query(sql, [name, message, id], function(err, rows, fields){
                 if (err) return reject(err);
                 let result = rows.length > 0 ? rows[0] : {};
                 return resolve(result);
             })
         })
     },
-    getOneUser(id){
-        return new Promise(function(resolve, reject){
-            let sql = `SELECT id, name, email, message, product FROM users  WHERE id = ?`
-            connection.query(sql, [id], function(err, rows, fields){
-                if (err) return reject(err);
-                let result = rows.length > 0 ? rows[0] : {};
-                return resolve(result);
-            })
-            
-        })
-    },
+
     getLoginUser(email){
         return new Promise(function(resolve, reject){
             let sql = `SELECT id, name, email, message FROM users  WHERE email = ?`
@@ -77,8 +101,8 @@ const UserModel = {
                 console.log(result)
             })
             if (result == {}) return reject("no");
-            sql =  "UPDATE users SET product_verified = 1"
-            connection.query(sql, function(err, rows, fields){
+            sql =  "UPDATE users SET product_verified = 1 WHERE product = ?"
+            connection.query(sql,[id] ,function(err, rows, fields){
                 if (err) return reject(err);
                
                 return resolve(result);

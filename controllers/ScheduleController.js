@@ -28,6 +28,12 @@ const getOneSchedule = async (req, res) => {
     res.json(user)
   };
 
+// const updateSchedule = async(req, res) => {
+//     const userId = req.params.userId;
+//     const user = await ScheduleModel.getOne(userId)
+
+//     res.json(user)
+// }
 
 
 module.exports = {

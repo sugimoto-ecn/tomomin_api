@@ -12,36 +12,51 @@ const ScheduleModel = require('../models/schedule')
 
 //ユーザ登録
 const registerUser = async (req, res) => {
-  const body = req.body
-  if(!body?.email || !body?.password) {
-      res.json({
-          message:"正しく入力してください"
-      })
+  try{
+    const body = req.body
+    if(!body?.email || !body?.password) {
+        res.json({
+            message:"正しく入力してください"
+        })
+    }
+    const {email , password} = body
+    const hash = toHash(password)
+    const product = createProductId()
+
+    const result = await UserModel.create(email, hash, product)
+    const user = await UserModel.login(email, hash)
+  
+    res.json({
+      user
+    })
+  }catch(error){
+    console.log(error)
+    error?.sql && delete error.sql
+    res.status(400).json(error)
   }
-  const {email , password} = body
-  const hash = toHash(password)
-  const product = createProductId()
-
-  const user = await UserModel.create(email, hash, product)
-
-  res.json(user)
 };
 
 //ユーザ情報更新
 const updateUser = async (req, res) => {
-  const body = req.body
-  if(!body?.name || !body.message){
-    res.json({
-      message: "正しく入力してください"
-    })
-  }
-  const {name, message} = body
-  await UserModel.update(name, message)
+  try{
+    const body = req.body
+    if(!body?.name || !body.message){
+      res.json({
+        message: "正しく入力してください"
+      })
+    }
+    const {name, message} = body
+    await UserModel.update(name, message, req.params.userId)
 
-  res.json({
-    name: req.body.name,
-    message: req.body.message,
-  });
+    res.json({
+      name: req.body.name,
+      message: req.body.message,
+    });
+  }catch(error){
+    console.log(error)
+    error?.sql && delete error.sql
+    res.status(400).json(error)
+  }
 };
 
 
@@ -69,11 +84,16 @@ const loginUser = async (req, res) => {
   const {email , password} = body
   const hash = toHash(password)
   
-  const result = await UserModel.login(email, hash)
-  console.log(result)
+  const user = await UserModel.login(email, hash)
+  console.log("##############")
+  console.log(user)
+  if(!user?.accessToken){
+    console.log('none')
+    res.status(404).json({"message":"メールアドレス・パスワードのいずれかが間違っています。"})
+  }
 
   res.json({
-    result
+    user
   });
 };
 

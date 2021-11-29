@@ -8,6 +8,7 @@ const {
     loginUser,
     getLoginUser,
     productUser,
+    refreshUser
 } = require('./controllers/UserController')
 
 const {
@@ -32,6 +33,7 @@ router.route("/users/login/get").get(verifyToken, getLoginUser)
 router.route("/users/login").post(loginUser)
 router.route("/users/:userId/update").put(verifyToken, updateUser)
 router.route("/users/:userId/get").get(verifyToken, getUser)
+
 
 router.route("/users/product").post(productUser)
 
