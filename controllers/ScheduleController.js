@@ -35,7 +35,6 @@ const getOneSchedule = async (req, res) => {
 //     res.json(user)
 // }
 
-
 module.exports = {
     createSchedule,
     getOneSchedule
