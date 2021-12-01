@@ -1,3 +1,4 @@
+const e = require('express')
 const connection = require('../models/db-connection')
 const SleepModel = require('../models/sleep')
 
@@ -12,6 +13,9 @@ const update = async (req, res) => {
 		if(type == "wakeup"){
 			wakeup = value;
 			sleep = null
+		}else{
+			sleep = value;
+			wakeup = null
 		}
 		const result = await SleepModel.create(user_id, wakeup, sleep)
 

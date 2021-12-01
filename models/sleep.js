@@ -10,10 +10,11 @@ const SleepModel = {
         return new Promise(function(resolve, reject){
             let result;
             let sql = "SELECT * FROM sleeps "
-                    + "where created BETWEEN "
-                    + "TIMESTAMP(DATE(CONVERT_TZ(NOW(), 'UTC', 'Asia/Tokyo'))) AND "
-                    // + "TIMESTAMP(DATE_ADD(CONVERT_TZ(CURRENT_DATE, INTERVAL 1 DAY));"
-                    + "TIMESTAMP(DATE_ADD(CURRENT_DATE, INTERVAL 1 DAY))"
+                    + "WHERE created >= (NOW() - INTERVAL 1 DAY)"
+                    // + "where created BETWEEN "
+                    // + "TIMESTAMP(DATE(CONVERT_TZ(NOW(), 'UTC', 'Asia/Tokyo'))) AND "
+                    // // + "TIMESTAMP(DATE_ADD(CONVERT_TZ(CURRENT_DATE, INTERVAL 1 DAY));"
+                    // + "TIMESTAMP(DATE_ADD(CURRENT_DATE, INTERVAL 1 DAY))"
             connection.query(sql, function(err, rows, fields){
                 if (err) return reject(err);
                 let result = rows.length > 0 ? rows[0] : {};
@@ -26,6 +27,7 @@ const SleepModel = {
             }
             console.log(result)
             console.log(sql)
+            console.log(wakeup, sleep, user_id)
             connection.query(sql, [wakeup, sleep, user_id], function(err, rows, fields){
                 console.log(err)
                 if (err) return reject(err);
