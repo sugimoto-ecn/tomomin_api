@@ -41,7 +41,6 @@ router.route("/users/login").post(loginUser)
 router.route("/users/:userId/update").put(verifyToken, updateUser)
 router.route("/users/:userId/get").get(verifyToken, getUser)
 
-
 router.route("/users/product").post(productUser)
 
 router.route("/schedule/:userId/create").post(verifyToken, createSchedule)
