@@ -30,7 +30,7 @@ const {
 
 
 const {
-    update,
+    create,
     get,
 } = require('./controllers/SleepsController')
 
@@ -46,7 +46,7 @@ router.route("/users/product").post(productUser)
 router.route("/schedule/:userId/create").post(verifyToken, createSchedule)
 router.route("/schedule/:userId/getone").get(verifyToken, getOneSchedule)
 
-router.route("/sleep/create").post(update)
+router.route("/sleep/create").post(create)
 router.route("/sleep/:userId/get").get(get)
 
 module.exports = router;

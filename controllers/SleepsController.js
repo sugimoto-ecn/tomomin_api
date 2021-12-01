@@ -3,7 +3,7 @@ const connection = require('../models/db-connection')
 const SleepModel = require('../models/sleep')
 const moment = require('moment')
 
-const update = async (req, res) => {
+const create = async (req, res) => {
 	try{
 		const {
 			type,
@@ -11,14 +11,14 @@ const update = async (req, res) => {
 		} = req.body
 		const value = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
 		let wakeup,sleep
+		let result;
 		if(type == "wakeup"){
-			wakeup = value;
-			sleep = null
+			
+			result = await SleepModel.sleep(user_id, value)
 		}else{
-			sleep = value;
-			wakeup = null
+		
+			result = await SleepModel.wakeup(user_id, value)
 		}
-		const result = await SleepModel.create(user_id, wakeup, sleep)
 
 		
 		res.json({
@@ -44,6 +44,6 @@ const get = async (req,res) => {
 }
 
 module.exports = {
-	update,
+	create,
 	get,
 }
