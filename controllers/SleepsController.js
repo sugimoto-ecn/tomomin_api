@@ -1,14 +1,15 @@
 const e = require('express')
 const connection = require('../models/db-connection')
 const SleepModel = require('../models/sleep')
+const moment = require('moment')
 
 const update = async (req, res) => {
 	try{
 		const {
 			type,
-			value,
 			user_id
 		} = req.body
+		const value = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
 		let wakeup,sleep
 		if(type == "wakeup"){
 			wakeup = value;
