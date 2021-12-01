@@ -1,20 +1,44 @@
 const connection = require('../models/db-connection')
+const SleepModel = require('../models/sleep')
 
-const wakeUp = (req, res) => {
-	console.log(req.body.datetime)
-	res.json({
-		datetime:req.body.datetime
-	})
+const update = async (req, res) => {
+	try{
+		const {
+			type,
+			value,
+			user_id
+		} = req.body
+		let wakeup,sleep
+		if(type == "wakeup"){
+			wakeup = value;
+			sleep = null
+		}
+		const result = await SleepModel.create(user_id, wakeup, sleep)
+
+		
+		res.json({
+			message:"success"
+		})
+	}catch(err){
+		console.log(err)
+		res.status(500).json({message:"err"})
+	}
 }
 
-const getWakeUp = (req,res) => {
-	console.log(req.params)
-	res.json({
-		message:"OK"
-	})
+const get = async (req,res) => {
+	try{
+	
+		const result = await SleepModel.getOne(req.params.userId)
+
+		
+		res.json(result)
+	}catch(err){
+		console.log(err)
+		res.status(500).json({message:"err"})
+	}
 }
 
 module.exports = {
-	wakeUp,
-	getWakeUp,
+	update,
+	get,
 }

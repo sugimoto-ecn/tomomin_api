@@ -28,6 +28,13 @@ const {
     getOneSchedule,
 } = require('./controllers/ScheduleController')
 
+
+const {
+    update,
+    get,
+} = require('./controllers/SleepsController')
+
+
 router.route("/users/register").post(registerUser)
 router.route("/users/login/get").get(verifyToken, getLoginUser)
 router.route("/users/login").post(loginUser)
@@ -39,5 +46,8 @@ router.route("/users/product").post(productUser)
 
 router.route("/schedule/:userId/create").post(verifyToken, createSchedule)
 router.route("/schedule/:userId/getone").get(verifyToken, getOneSchedule)
+
+router.route("/sleep/create").post(update)
+router.route("/sleep/:userId/get").get(get)
 
 module.exports = router;
