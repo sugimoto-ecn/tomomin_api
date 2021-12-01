@@ -12,7 +12,7 @@ const create = async (req, res) => {
 		const value = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
 		let wakeup,sleep
 		let result;
-		if(type == "wakeup"){
+		if(type != "wakeup"){
 			
 			result = await SleepModel.sleep(user_id, value)
 		}else{
